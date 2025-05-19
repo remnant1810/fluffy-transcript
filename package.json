@@ -1,0 +1,19 @@
+{
+  "name": "fluffy-transcript",
+  "version": "1.0.0",
+  "description": "Transcript application with React frontend and Python backend",
+  "private": true,
+  "scripts": {
+    "install:frontend": "cd frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "start:frontend": "cd frontend && npm start",
+    "test:frontend": "cd frontend && npm test",
+    "start:backend": "cd backend && python -m uvicorn main:app --reload"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
