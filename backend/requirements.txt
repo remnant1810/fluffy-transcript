@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+sentence-transformers
+pinecone-client
+whisper
+openai
+python-dotenv
+pydantic
