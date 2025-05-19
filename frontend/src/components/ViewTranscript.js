@@ -1,6 +1,7 @@
 // ViewTranscript.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MessageSquare } from 'lucide-react';
 
 function ViewTranscript({ transcriptId, onBack }) {
   const [transcript, setTranscript] = useState(null);
@@ -52,7 +53,7 @@ function ViewTranscript({ transcriptId, onBack }) {
   };
 
   if (loading) {
-    return <div>Loading transcript...</div>;
+    return <div className="loading">Loading transcript...</div>;
   }
 
   if (error) {
@@ -62,15 +63,26 @@ function ViewTranscript({ transcriptId, onBack }) {
   return (
     <div className="transcript-view">
       <div className="transcript-header">
-        <h2>{transcript.name}</h2>
-        <div className="transcript-meta">
-          <span>Date: {transcript.date}</span>
-          <button onClick={handleBack}>Back</button>
-          <button onClick={handleDelete} className="delete-btn">Delete</button>
+        <h2>{transcript.name || 'Untitled Transcript'}</h2>
+        <div className="transcript-actions">
+          <button className="secondary" onClick={handleBack}>
+            ← Back to List
+          </button>
+          <button className="danger" onClick={handleDelete} disabled={loading}>
+            {loading ? 'Deleting...' : 'Delete Transcript'}
+          </button>
         </div>
       </div>
+      <div className="transcript-meta">
+        <span>📅 {new Date(transcript.date).toLocaleDateString()}</span>
+        {transcript.duration && <span>⏱️ {Math.round(transcript.duration / 60)} minutes</span>}
+      </div>
       <div className="transcript-content">
-        <pre>{transcript.text}</pre>
+        {transcript.text ? (
+          <pre>{transcript.text}</pre>
+        ) : (
+          <div className="no-content">No transcript content available</div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 // Transcribe.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User, MessageSquare } from 'lucide-react';
 
 function Transcribe() {
   const [file, setFile] = useState(null);
@@ -60,43 +61,60 @@ function Transcribe() {
 
   return (
     <div className="transcribe-container">
-      <h2>Transcribe Audio</h2>
-      <form onSubmit={handleSubmit} className="transcribe-form">
+      <h2>Upload Audio/Video</h2>
+      <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
-          <label htmlFor="file">Audio File:</label>
-          <input
-            type="file"
-            id="file"
-            accept="audio/*"
-            onChange={handleFileChange}
-            disabled={loading}
-          />
+          <label className="file-upload">
+            <span>Select a file</span>
+            <input 
+              type="file" 
+              onChange={handleFileChange} 
+              accept="audio/*,video/*" 
+              className="file-input"
+            />
+            {file && <span className="file-name">{file.name}</span>}
+          </label>
         </div>
+        
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label>Name (optional)</label>
           <input
             type="text"
-            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            disabled={loading}
+            placeholder="Enter a name for this transcript"
+            className="form-input"
           />
         </div>
+        
         <div className="form-group">
-          <label htmlFor="date">Date:</label>
+          <label>Date (optional)</label>
           <input
             type="date"
-            id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            disabled={loading}
+            className="form-input"
           />
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Transcribing...' : 'Transcribe'}
-        </button>
+        
+        <div className="form-actions">
+          <button 
+            type="submit" 
+            disabled={loading || !file}
+            className={!file ? 'disabled' : ''}
+          >
+            {loading ? (
+              <>
+                <span className="spinner"></span> Uploading...
+              </>
+            ) : (
+              'Upload and Transcribe'
+            )}
+          </button>
+        </div>
+        
+        {error && <div className="error-message">{error}</div>}
       </form>
-      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }

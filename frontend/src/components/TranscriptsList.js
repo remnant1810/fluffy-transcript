@@ -1,5 +1,6 @@
 // TranscriptsList.js
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
 
 function TranscriptsList({ onSelectTranscript }) {
@@ -31,7 +32,7 @@ function TranscriptsList({ onSelectTranscript }) {
   };
 
   if (loading) {
-    return <div>Loading transcripts...</div>;
+    return <div className="loading">Loading transcripts...</div>;
   }
 
   if (error) {
@@ -42,7 +43,7 @@ function TranscriptsList({ onSelectTranscript }) {
     <div className="transcripts-list">
       <h2>Transcripts</h2>
       {transcripts.length === 0 ? (
-        <div>No transcripts available</div>
+        <div className="no-transcripts">No transcripts available. Upload a new one to get started.</div>
       ) : (
         <div className="transcripts-grid">
           {transcripts.map((transcript) => (
@@ -51,11 +52,14 @@ function TranscriptsList({ onSelectTranscript }) {
               className="transcript-card"
               onClick={() => handleSelect(transcript.id)}
             >
-              <MessageSquare className="transcript-icon" />
-              <h3>{transcript.name}</h3>
+              <h3>{transcript.name || 'Untitled Transcript'}</h3>
               <div className="transcript-meta">
-                <span>Date: {transcript.date}</span>
+                <span>📅 {new Date(transcript.date).toLocaleDateString()}</span>
+                {transcript.duration && <span>⏱️ {Math.round(transcript.duration / 60)} min</span>}
               </div>
+              <p className="transcript-preview">
+                {transcript.content ? `${transcript.content.substring(0, 150)}${transcript.content.length > 150 ? '...' : ''}` : 'No content available'}
+              </p>
             </div>
           ))}
         </div>
