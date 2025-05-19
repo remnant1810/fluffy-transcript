@@ -24,21 +24,31 @@ logger = logging.getLogger(__name__)
 
 # Configuration using Pydantic for type safety and validation
 class Settings(BaseSettings):
+    # Database Configuration
     DATABASE_URL: str = "sqlite:///./transcripts.db"
-    WHISPER_MODEL: str = "tiny"
-    EMBEDDING_MODEL: str = "all-mpnet-base-v2"
+
+    # Whisper Configuration
+    WHISPER_MODEL: str = "tiny"  # Options: tiny, base, small, medium, large
+
+    # Embedding Configuration
+    EMBEDDING_MODEL: str = "llama-text-embed-v2"
+    EMBEDDING_DIMENSION: int = 1024
+    CHUNK_SIZE: int = 300
+    CHUNK_OVERLAP: int = 50
+
+    # Pinecone Configuration (required)
     PINECONE_API_KEY: str
     PINECONE_INDEX: str = "transcripts"
-    PINECONE_REGION: str = "us-west-2"
+    PINECONE_REGION: str = "us-east-1"
     PINECONE_CLOUD: str = "aws"
-    EMBEDDING_DIMENSION: int = 768
+
+    # OpenAI Configuration (required)
     OPENAI_API_KEY: str
-    OPENAI_MODEL: str = "gpt-3.5-turbo"
-    CHUNK_SIZE: int = 500
-    CHUNK_OVERLAP: int = 50
-    
+    OPENAI_MODEL: str = "gpt-3.5-turbo"  # Or gpt-4 for higher quality responses
+
     class Config:
-        env_file = "../frontend/.env"
+        env_file = ".env"  # Now using .env in the same directory
+        env_file_encoding = 'utf-8'
 
 # Load settings
 settings = Settings()
@@ -510,4 +520,9 @@ def health_check():
 # Run the application
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    import os
+    
+    # Get port from environment variable or use default 8000
+    port = int(os.environ.get("PORT", 8000))
+    # Run with 0.0.0.0 to accept connections from any IP
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

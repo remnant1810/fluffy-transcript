@@ -1,24 +1,29 @@
 services:
   - type: web
-    name: transcript-assistant
+    name: transcript-assistant-backend
     env: python
+    region: oregon  # Choose a region closest to you
     build:
       os: ubuntu
       python:
         version: 3.10.0
     buildCommand: |
-      pip install -r backend/requirements.txt
-    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+      cd backend
+      pip install -r requirements.txt
+    startCommand: bash start.sh
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
       - key: PYTHONUNBUFFERED
         value: true
+      - key: PORT
+        value: 10000  # Default port if not set by Render
     plan: free
 
   - type: web
     name: transcript-assistant-frontend
     env: node
+    region: oregon  # Match the backend region
     buildCommand: |
       cd frontend
       npm install
@@ -27,6 +32,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 16.x
+      - key: REACT_APP_API_URL
+        sync: false  # Will be set manually in Render dashboard
     routes:
       - type: rewrite
         source: "/*"
