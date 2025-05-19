@@ -2,7 +2,7 @@ fastapi
 uvicorn
 sqlalchemy
 sentence-transformers
-pinecone-client
+pinecone>=3.0.0
 whisper
 openai
 python-dotenv
