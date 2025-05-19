@@ -14,7 +14,7 @@ function TranscriptsList({ onSelectTranscript }) {
 
   const fetchTranscripts = async () => {
     try {
-      const response = await fetch('http://localhost:8000/transcripts');
+      const response = await fetch('https://fluffy-transcript.onrender.com/transcripts');
       if (!response.ok) {
         throw new Error('Failed to fetch transcripts');
       }

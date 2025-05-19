@@ -32,7 +32,7 @@ function ChatUI() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/ask', {
+      const response = await fetch('https://fluffy-transcript.onrender.com/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

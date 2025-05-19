@@ -15,7 +15,7 @@ function ViewTranscript({ transcriptId, onBack }) {
 
   const fetchTranscript = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/transcripts/${transcriptId}`);
+      const response = await fetch(`https://fluffy-transcript.onrender.com/transcripts/${transcriptId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch transcript');
       }
@@ -38,7 +38,7 @@ function ViewTranscript({ transcriptId, onBack }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/transcripts/${transcriptId}`, {
+      const response = await fetch(`https://fluffy-transcript.onrender.com/transcripts/${transcriptId}`, {
         method: 'DELETE',
       });
 

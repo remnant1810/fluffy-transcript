@@ -41,7 +41,7 @@ function Transcribe() {
     formData.append('date', date);
 
     try {
-      const response = await fetch('http://localhost:8000/transcribe', {
+      const response = await fetch('https://fluffy-transcript.onrender.com/transcribe', {
         method: 'POST',
         body: formData,
       });
