@@ -5,14 +5,15 @@
   "private": true,
   "scripts": {
     "install:frontend": "cd frontend && npm install",
-    "build:frontend": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm install && CI=false npm run build",
     "start:frontend": "cd frontend && npm start",
     "test:frontend": "cd frontend && npm test",
-    "start:backend": "cd backend && python -m uvicorn main:app --reload"
+    "start:backend": "cd backend && python -m uvicorn main:app --reload",
+    "postinstall": "npm run install:frontend"
   },
-  "workspaces": [
-    "frontend"
-  ],
+  "dependencies": {
+    "serve": "^14.2.0"
+  },
   "engines": {
     "node": ">=16.0.0"
   }
