@@ -1,7 +1,6 @@
 // Transcribe.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, MessageSquare } from 'lucide-react';
 
 function Transcribe() {
   const [file, setFile] = useState(null);

@@ -1,7 +1,6 @@
 // ViewTranscript.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare } from 'lucide-react';
 
 function ViewTranscript({ transcriptId, onBack }) {
   const [transcript, setTranscript] = useState(null);

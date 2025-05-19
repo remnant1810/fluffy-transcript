@@ -1,6 +1,5 @@
 // TranscriptsList.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
 
 function TranscriptsList({ onSelectTranscript }) {
