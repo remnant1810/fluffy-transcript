@@ -61,10 +61,33 @@ function ChatUI() {
     scrollToBottom();
   };
 
+  // Auto-scroll to bottom when messages change or loading state changes
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  // Handle virtual keyboard on mobile
+  const [isMobile, setIsMobile] = React.useState(false);
+  
+  React.useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <MessageSquare className="chat-icon" size={24} />
+        <MessageSquare className="chat-icon" size={isMobile ? 20 : 24} />
         <h2>Transcript Assistant</h2>
       </div>
       
@@ -81,7 +104,14 @@ function ChatUI() {
               className={`message ${message.isUser ? 'user' : 'bot'}`}
             >
               <div className="message-content">
-                <div className="message-text">{message.text}</div>
+                <div className="message-text">
+                  {message.text.split('\n').map((line, i) => (
+                    <React.Fragment key={i}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </div>
                 <div className="message-timestamp">
                   {formatTimestamp(message.timestamp)}
                 </div>
@@ -99,21 +129,26 @@ function ChatUI() {
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
-            placeholder="Ask a question about your transcripts..."
+            placeholder="Ask about your transcripts..."
             disabled={loading}
-            autoFocus
+            autoFocus={!isMobile} // Don't auto-focus on mobile to prevent keyboard popup
+            enterKeyHint="send"
+            inputMode="text"
+            aria-label="Type your message"
           />
           <button 
             type="submit" 
             disabled={loading || !userInput.trim()}
             className={loading ? 'loading' : ''}
+            aria-label={loading ? 'Sending...' : 'Send message'}
           >
             {loading ? (
               <>
-                <span className="spinner"></span> Thinking...
+                <span className="spinner" aria-hidden="true"></span>
+                <span>Thinking...</span>
               </>
             ) : (
-              'Send'
+              <span>Send</span>
             )}
           </button>
         </form>
