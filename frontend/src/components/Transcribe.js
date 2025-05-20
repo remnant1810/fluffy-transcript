@@ -61,7 +61,10 @@ function Transcribe() {
 
   return (
     <div className="transcribe-container">
-      <h2>Upload Audio/Video</h2>
+      <div className="welcome-message">
+        <h2>Transcribe Audio</h2>
+        <p>Upload your audio or video file to get started!</p>
+      </div>
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
           <label className="file-upload">
